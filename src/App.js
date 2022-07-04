@@ -8,6 +8,7 @@ import twitterLogo from "./assets/twitter-logo.svg";
 const CONTRACT_ADDRESS = "0x5b7E5225EbA59aE5F2790F866F1757a88054710e";
 const TWITTER_HANDLE = "ZushiZryojiro";
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
+const RARIBLE_USER_LINK = `https://rarible.com/search/users/`;
 const OPENSEA_LINK = "";
 const TOTAL_MINT_COUNT = 50;
 const App = () => {
@@ -17,7 +18,11 @@ const App = () => {
   const [currentAccount, setCurrentAccount] = useState("");
   const [maxNumOfTokens, setMaxNumOfTokens] = useState(0);
   const [nextTokenIds, setNextTokenIds] = useState(0);
+  // mining中を知らせるフラグ
   const [mining, setMining] = useState(false);
+  // raribleのリンク, currentAccountがセットされたらセットする
+  const [raribleLink, setRaribleLink] = useState("");
+
   /*この段階でcurrentAccountの中身は空*/
   console.log("currentAccount: ", currentAccount);
   /*
@@ -205,6 +210,12 @@ const App = () => {
     }
   };
 
+  useEffect(() => {
+    let link = RARIBLE_USER_LINK + currentAccount;
+    setRaribleLink(link);
+    console.log("rarible link: ", link);
+  }, [currentAccount]);
+
   // renderNotConnectedContainer メソッドを定義します。
   const renderNotConnectedContainer = () => (
     <button
@@ -245,14 +256,19 @@ const App = () => {
           )}
         </div>
         {mining == true && <button> mining... </button>}
+        {raribleLink != "" && (
+          <a href={raribleLink}>
+            <input type="button" value="Rarible でコレクションを表示" />
+          </a>
+        )}
         <div className="footer-container">
-          <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
           <a
             className="footer-text"
             href={TWITTER_LINK}
             target="_blank"
             rel="noreferrer"
           >{`built on @${TWITTER_HANDLE}`}</a>
+          <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
         </div>
       </div>
     </div>
