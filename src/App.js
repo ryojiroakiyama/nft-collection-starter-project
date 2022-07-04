@@ -17,6 +17,7 @@ const App = () => {
   const [currentAccount, setCurrentAccount] = useState("");
   const [maxNumOfTokens, setMaxNumOfTokens] = useState(0);
   const [nextTokenIds, setNextTokenIds] = useState(0);
+  const [mining, setMining] = useState(false);
   /*この段階でcurrentAccountの中身は空*/
   console.log("currentAccount: ", currentAccount);
   /*
@@ -121,6 +122,7 @@ const App = () => {
           alert(
             `あなたのウォレットに NFT を送信しました。OpenSea に表示されるまで最大で10分かかることがあります。NFT へのリンクはこちらです: https://testnets.opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId.toNumber()}`
           );
+          setMining(false);
           askContractToGetNextTokenIds();
         });
         console.log("Setup event listener!");
@@ -145,9 +147,9 @@ const App = () => {
         );
         console.log("Going to pop wallet now to pay gas...");
         let nftTxn = await connectedContract.makeAnEpicNFT();
+        setMining(true);
         console.log("Mining...please wait.");
         await nftTxn.wait();
-
         console.log(
           `Mined, see transaction: https://rinkeby.etherscan.io/tx/${nftTxn.hash}`
         );
@@ -236,11 +238,13 @@ const App = () => {
             >
               Mint NFT{" "}
               <button>
+                {/*nextTokenIds == 現在ミントされているNFTの数*/}
                 {nextTokenIds} / {maxNumOfTokens}
               </button>
             </button>
           )}
         </div>
+        {mining == true && <button> mining... </button>}
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
           <a
