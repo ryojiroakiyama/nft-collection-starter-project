@@ -30,6 +30,14 @@ const App = () => {
     } else {
       console.log("We have the ethereum object", ethereum);
     }
+    // rinkebyチェーンに接続しているかの確認
+    let chainId = await ethereum.request({ method: "eth_chainId" });
+    console.log("Connected to chain " + chainId);
+    // 0x4 は　Rinkeby の ID です。
+    const rinkebyChainId = "0x4";
+    if (chainId !== rinkebyChainId) {
+      alert("You are not connected to the Rinkeby Test Network!");
+    }
     /* ユーザーが認証可能なウォレットアドレスを持っている場合は、
      * ユーザーに対してウォレットへのアクセス許可を求める。
      * 許可されれば、ユーザーの最初のウォレットアドレスを
@@ -61,6 +69,14 @@ const App = () => {
       if (!ethereum) {
         alert("Get MetaMask!");
         return;
+      }
+      // rinkebyチェーンに接続しているかの確認
+      let chainId = await ethereum.request({ method: "eth_chainId" });
+      console.log("Connected to chain " + chainId);
+      // 0x4 は　Rinkeby の ID です。
+      const rinkebyChainId = "0x4";
+      if (chainId !== rinkebyChainId) {
+        alert("You are not connected to the Rinkeby Test Network!");
       }
       /*
        * ウォレットアドレスに対してアクセスをリクエストしています。
