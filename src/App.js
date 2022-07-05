@@ -20,8 +20,6 @@ const App = () => {
   const [nextTokenIds, setNextTokenIds] = useState(0);
   // mining中を知らせるフラグ
   const [mining, setMining] = useState(false);
-  // raribleのリンク, currentAccountがセットされたらセットする
-  const [raribleLink, setRaribleLink] = useState("");
 
   /*この段階でcurrentAccountの中身は空*/
   console.log("currentAccount: ", currentAccount);
@@ -210,12 +208,6 @@ const App = () => {
     }
   };
 
-  useEffect(() => {
-    let link = RARIBLE_USER_LINK + currentAccount;
-    setRaribleLink(link);
-    console.log("rarible link: ", link);
-  }, [currentAccount]);
-
   // renderNotConnectedContainer メソッドを定義します。
   const renderNotConnectedContainer = () => (
     <button
@@ -256,8 +248,8 @@ const App = () => {
           )}
         </div>
         {mining == true && <button> mining... </button>}
-        {raribleLink != "" && (
-          <a href={raribleLink}>
+        {currentAccount && (
+          <a href={RARIBLE_USER_LINK + currentAccount}>
             <input type="button" value="Rarible でコレクションを表示" />
           </a>
         )}
